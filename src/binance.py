@@ -2,7 +2,6 @@ import os
 import time
 import requests
 import logging
-from dotenv import load_dotenv
 from binance.client import Client
 from binance.exceptions import BinanceAPIException, BinanceRequestException
 
@@ -19,7 +18,6 @@ class BinanceClient:
     """
 
     def __init__(self):
-        load_dotenv()
         self.api_key = os.getenv("BINANCE_API_KEY")
         self.api_secret = os.getenv("BINANCE_API_SECRET")
         self.api_url = os.getenv('API_URL')

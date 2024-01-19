@@ -1,4 +1,5 @@
 
-docker build -t binance-trader .
+docker build -t coin-searcher .
 
-docker run --env-file .env --name binance-trader-container binance-trader
+docker run -d --name coin-searcher-container coin-searcher
+docker logs -f coin-searcher-container
