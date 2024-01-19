@@ -1,10 +1,25 @@
 from binance import BinanceClient
 
 class TradingPair:
+    """
+    Represents a trading pair.
+
+    Attributes:
+        trading_pair (dict): The trading pair information.
+
+    Methods:
+        meets_criteria: Checks if the trading pair meets the specified criteria.
+    """
     def __init__(self, trading_pair):
         self.trading_pair = trading_pair
 
     def meets_criteria(self):
+        """
+        Checks if the trading pair meets the specified criteria.
+
+        Returns:
+            bool: True if the trading pair meets the criteria, False otherwise.
+        """
         if self.trading_pair['status'] != 'TRADING':
             return False
 

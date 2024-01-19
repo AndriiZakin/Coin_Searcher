@@ -28,6 +28,13 @@ def get_valid_pairs(pairs):
     return [pair for pair in pairs if meets_criterias(pair)]
 
 def get_all_trading_pairs():
+    """
+    Fetches all trading pairs from Binance exchange, updates the data files,
+    and returns a list of valid trading pairs.
+
+    Returns:
+        list: A list of valid trading pairs.
+    """
     client = BinanceClient()
     fetch_func = client.get_trading_pairs
 

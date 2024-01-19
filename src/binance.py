@@ -7,6 +7,17 @@ from binance.client import Client
 from binance.exceptions import BinanceAPIException, BinanceRequestException
 
 class BinanceClient:
+    """
+    A class representing a client for interacting with the Binance API.
+
+    Attributes:
+        api_key (str): The API key for accessing the Binance API.
+        api_secret (str): The API secret for accessing the Binance API.
+        api_url (str): The URL of the Binance API.
+        client (Client): The Binance API client.
+        headers (dict): The headers to be included in API requests.
+    """
+
     def __init__(self):
         load_dotenv()
         self.api_key = os.getenv("BINANCE_API_KEY")
@@ -21,9 +32,24 @@ class BinanceClient:
 
     @staticmethod
     def calculate_volatility(price_change_percent):
+        """
+        Calculates the volatility based on the given price change percentage.
+
+        Args:
+            price_change_percent (float): The price change percentage.
+
+        Returns:
+            float: The calculated volatility.
+        """
         return price_change_percent / 100
 
     def get_trading_pairs(self):
+        """
+        Retrieves the trading pairs available on Binance.
+
+        Returns:
+            list: A list of trading pairs.
+        """
         url = f"{self.api_url}/exchangeInfo"
     
         while True:
@@ -47,6 +73,15 @@ class BinanceClient:
                 return None
 
     def get_symbol_data(self, pair):
+        """
+        Retrieves data for a specific trading pair.
+
+        Args:
+            pair (str): The trading pair symbol.
+
+        Returns:
+            dict: The data for the trading pair.
+        """
         try:
             stats = self.client.get_ticker(symbol=pair)
         except (BinanceAPIException, BinanceRequestException) as e:
