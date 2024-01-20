@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 from binance.exceptions import BinanceAPIException, BinanceRequestException
-from src.binance import BinanceClient
+from binance_work import BinanceClient
 from binance.client import Client
 
 class TestBinanceClient(unittest.TestCase):

@@ -39,14 +39,18 @@ class BinanceClient:
         Returns:
             float: The calculated volatility.
         """
-        return price_change_percent / 100
+        try:
+            return float(price_change_percent) / 100
+        
+        except ValueError:
+            return 0.0 
 
     def get_trading_pairs(self):
         """
         Retrieves the trading pairs available on Binance.
 
         Returns:
-            list: A list of trading pairs.
+            list: A list of trading pairs that end with 'USDT'.
         """
         url = f"{self.api_url}/exchangeInfo"
     
@@ -61,11 +65,11 @@ class BinanceClient:
                     if retry_after:
                         time.sleep(int(retry_after))
                     else:
-                        time.sleep(60)  # Default to waiting 60 seconds
+                        time.sleep(60)
                     continue
                 
                 data = response.json()
-                return [symbol['symbol'] for symbol in data['symbols']]
+                return [symbol['symbol'] for symbol in data['symbols'] if symbol['symbol'].endswith('USDT')]
             except (requests.exceptions.RequestException, ValueError, KeyError) as e:
                 logging.error("Error fetching exchange info")
                 return None

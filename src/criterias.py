@@ -1,4 +1,4 @@
-from binance import BinanceClient
+from binance_work import BinanceClient
 
 class TradingPair:
     """
@@ -23,10 +23,10 @@ class TradingPair:
         if self.trading_pair['status'] != 'TRADING':
             return False
 
-        if not (self.trading_pair['volume'] > 10000 and self.trading_pair['liquidity'] > 10000):
+        if not (self.trading_pair['volume'] > 5000 and self.trading_pair['liquidity'] > 10000):
             return False
 
-        if not float(self.trading_pair['priceChangePercent']) > 10:
+        if not float(self.trading_pair['priceChangePercent']) > 5:
             return False
         
         return True
@@ -36,12 +36,14 @@ class TradingPair:
 def meets_criterias(symbol):
     fetcher = BinanceClient()
     trading_pair = fetcher.get_symbol_data(symbol)
-
+  
     if trading_pair is None:
         return False
 
     trading_pair = TradingPair(trading_pair)
-    return trading_pair.meets_criteria()
+    result = trading_pair.meets_criteria()
+    print(result)
+    return result #trading_pair.meets_criteria()
 
 
 
