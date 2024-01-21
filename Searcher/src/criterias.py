@@ -1,4 +1,5 @@
-from binance_work import BinanceClient
+import logging
+from Searcher.src.binance_work import BinanceClient
 
 class TradingPair:
     """
@@ -42,7 +43,7 @@ def meets_criterias(symbol):
 
     trading_pair = TradingPair(trading_pair)
     result = trading_pair.meets_criteria()
-    print(result)
+    logging.info(result)
     return result #trading_pair.meets_criteria()
 
 

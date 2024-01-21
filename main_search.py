@@ -1,6 +1,6 @@
 import json
-from binance_work import BinanceClient
-from criterias import meets_criterias
+from Searcher.src.binance_work import BinanceClient
+from Searcher.src.criterias import meets_criterias
 
 def load_valid_data(filename, data):
     try:
@@ -46,3 +46,6 @@ def get_all_trading_pairs():
 
     valid_pairs = get_valid_pairs(trading_pairs)
     load_valid_data('valid_pairs.json', valid_pairs)
+
+if __name__ == '__main__':
+    get_all_trading_pairs()

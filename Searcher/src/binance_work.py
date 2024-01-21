@@ -20,11 +20,11 @@ class BinanceClient:
     def __init__(self):
         self.api_key = os.getenv("BINANCE_API_KEY")
         self.api_secret = os.getenv("BINANCE_API_SECRET")
-        self.api_url = os.getenv('API_URL')
+        self.api_url = "https://api.binance.com/api/v3" 
         self.client = Client(self.api_key, self.api_secret)
 
-        if not self.api_key or not self.api_secret:
-            raise ValueError("API keys not found in environment variables")
+        '''if not self.api_key or not self.api_secret:
+            raise ValueError("API keys not found in environment variables")'''
 
         self.headers = {'X-MBX-APIKEY': self.api_key}
 

@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from src.get_all_trading_pairs import get_all_trading_pairs
-from binance_work import get_valid_pairs
+from main_search import get_all_trading_pairs
+from src.binance_work import get_valid_pairs
 
 class TestGetAllTradingPairs(unittest.TestCase):
     @patch('src.get_all_trading_pairs.BinanceClient')
