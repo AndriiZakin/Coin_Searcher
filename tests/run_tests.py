@@ -3,13 +3,14 @@ import os
 import sys
 
 # Add the parent directory to the Python path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(parent_dir)
 
 if __name__ == "__main__":
     loader = unittest.TestLoader()
     
     # Define the directories where your tests are
-    test_dirs = ['../find_coins/tests', '../simulation/tests']
+    test_dirs = [os.path.join(parent_dir, 'find_coins/tests'), os.path.join(parent_dir, 'simulation/tests')]
     
     # Create a test suite
     suite = unittest.TestSuite()
