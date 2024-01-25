@@ -7,3 +7,11 @@ __pycache__
 *.pyo
 *.pyd
 *.db
+New_Coins_Research
+
+Real_Time_Test/data
+Real_Time_Test/venv
+Real_Time_Test/__pycache__
+Real_Time_Test/*.pyc
+Real_Time_Test/*.pyo
+Real_Time_Test/.env
