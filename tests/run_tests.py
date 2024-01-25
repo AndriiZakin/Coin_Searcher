@@ -2,8 +2,8 @@ import unittest
 import os
 import sys
 
-# Get the directory that the current script is in
-parent_dir = os.path.dirname(os.path.abspath(__file__))
+# Get the parent directory of the current script
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Add the parent directory to the Python path
 sys.path.append(parent_dir)
