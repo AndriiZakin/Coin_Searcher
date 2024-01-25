@@ -2,24 +2,21 @@ import unittest
 import os
 import sys
 
-# Get the parent directory of the current script
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 # Add the parent directory to the Python path
-sys.path.append(parent_dir)
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 if __name__ == "__main__":
     loader = unittest.TestLoader()
     
     # Define the directories where your tests are
-    test_dirs = [os.path.join(parent_dir, 'find_coins/tests'), os.path.join(parent_dir, 'simulation/tests')]
+    test_dirs = ['../find_coins/tests', '../simulation/tests']
     
     # Create a test suite
     suite = unittest.TestSuite()
 
     # Discover tests from each directory and add them to the test suite
     for dir in test_dirs:
-        suite.addTests(loader.discover(dir))
+        suite.addTests(loader.discover(dir, pattern='test*.py'))
 
     runner = unittest.TextTestRunner()
     result = runner.run(suite)
