@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from binance.client import Client
 from dotenv import load_dotenv
 from datetime import datetime
@@ -51,8 +52,8 @@ class DataFetcher:
 
         # Load fetched symbols
         self.fetched_symbols = set()
-        if os.path.exists('Real_Time_Test/data/fetched_symbols.json'):
-            with open('Real_Time_Test/data/fetched_symbols.json', 'r') as f:
+        if os.path.exists(os.getenv('FETCHED_SYMBOLS_PATH')):
+            with open(os.getenv('FETCHED_SYMBOLS_PATH'), 'r') as f:
                 self.fetched_symbols = set(json.load(f))
 
     @timer_decorator
@@ -186,13 +187,15 @@ class DataFetcher:
         """
         # Append new symbols to 'fetched_symbols.json'
         new_symbols = [symbol for (symbol, base, quote), date, open, high, low, close in sorted_new_symbols]
-        new_symbols_json = json.dumps(new_symbols)
+        new_symbols_dict = OrderedDict.fromkeys(new_symbols)
 
         if os.path.exists(fetched_symbols_path):
             with open(fetched_symbols_path, 'r') as f:
-                existing_symbols = set(json.load(f))
-            existing_symbols.update(new_symbols)
-            new_symbols_json = json.dumps(list(existing_symbols))
+                existing_symbols = OrderedDict.fromkeys(json.load(f))
+            existing_symbols.update(new_symbols_dict)
+            new_symbols_json = json.dumps(list(existing_symbols.keys()))
+        else:
+            new_symbols_json = json.dumps(list(new_symbols_dict.keys()))
 
         with open(fetched_symbols_path, 'w') as f:
             f.write(new_symbols_json)

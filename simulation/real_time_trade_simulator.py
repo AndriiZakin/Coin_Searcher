@@ -1,4 +1,5 @@
 from binance.streams import ThreadedWebsocketManager 
+from datetime import datetime
 
 class RealTimeTradeSimulator:
     def __init__(self, client, logger, symbol, target_price, amount_usd):
@@ -12,9 +13,11 @@ class RealTimeTradeSimulator:
     def process_message(self, msg):
         if msg['e'] != 'error':
             current_price = float(msg['p'])
+            total_value = self.quantity * current_price  # Calculate the total value of the coins
             self.logger.info(f"Current price of {self.symbol}: {current_price}")
-            if current_price >= self.target_price:
-                self.logger.info(f"Simulating selling {self.quantity} {self.symbol} at {current_price}...")
+            if total_value >= self.target_price:
+                sell_date = datetime.now()
+                self.logger.info(f"Simulating selling {self.quantity} {self.symbol} at {current_price} on {sell_date}...")
                 self.bm.stop_socket(self.conn_key)
         else:
             self.logger.error(msg['m'])
@@ -28,7 +31,12 @@ class RealTimeTradeSimulator:
         self.quantity = self.amount_usd / current_price
 
         self.logger.info(f"Simulating buying {self.quantity} {self.symbol} for {self.amount_usd} USD at {current_price}...")
-        self.logger.info("Target price not reached in historical data, continuing with real-time data...")
 
         self.conn_key = self.bm.start_symbol_ticker_socket(self.symbol, self.process_message)
         self.bm.start()
+
+        if not self.bm.is_alive():
+            self.logger.error("WebSocket connection failed.")
+            return False
+        
+        return True

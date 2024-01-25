@@ -14,7 +14,9 @@ def simulate_coin_trade(coin, start_time, amount_usd, target_price):
         logger.error(f"An error occurred while creating the Client for {coin}: {e}")
         return
 
-    if start_time.date() == datetime.today().date():
+    current_date_timestamp = int(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp() * 1000)
+
+    if int(start_time) == current_date_timestamp:
         # If start_time is today's date, start real-time trading directly
         try:
             real_time_simulator = RealTimeTradeSimulator(client, logger, coin, target_price, amount_usd)

@@ -1,0 +1,21 @@
+import unittest
+
+if __name__ == "__main__":
+    loader = unittest.TestLoader()
+    
+    # Define the directories where your tests are
+    test_dirs = ['find_coins/tests', 'simulation/tests']
+    
+    # Create a test suite
+    suite = unittest.TestSuite()
+
+    # Discover tests from each directory and add them to the test suite
+    for dir in test_dirs:
+        suite.addTests(loader.discover(dir))
+
+    runner = unittest.TextTestRunner()
+    result = runner.run(suite)
+
+    # Exit the script with an error code if tests failed.
+    if not result.wasSuccessful():
+        exit(1)
