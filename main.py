@@ -1,7 +1,7 @@
 import json
-from simulation import simulate_coin_trade
+from simulation import CoinTradeSimulator
 import threading
-from find_coins import DataFetcher
+from find_coins import FindCoins
 from main_logger import setup_logger
 from main_config import load_configuration
 
@@ -12,7 +12,7 @@ class SimulationManager:
         self.coins_list, self.start_time, self.amount_usd, self.target_price, self.num_coins = load_configuration()
 
     def fetch_symbols(self):
-        fetcher = DataFetcher()
+        fetcher = FindCoins()
         fetcher.fetch_klines_data("1 Jan, 2017", None)
 
     def start_simulations(self):
@@ -27,7 +27,8 @@ class SimulationManager:
         # Create a new thread for each coin
         for coin in coins:
             self.logger.info(f"Starting simulation for {coin}")
-            threading.Thread(target=simulate_coin_trade, args=(coin, self.start_time, amount_per_coin, self.target_price)).start()
+            simulator = CoinTradeSimulator(coin, self.start_time, amount_per_coin, self.target_price)
+            threading.Thread(target=simulator.simulate_trade).start()
 
 def main():
     manager = SimulationManager()

@@ -1,1 +1,1 @@
-from .find_coins import DataFetcher
+from .find_coins import FindCoins

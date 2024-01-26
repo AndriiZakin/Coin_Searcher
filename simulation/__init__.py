@@ -1,1 +1,1 @@
-from .coin_simulation import simulate_coin_trade
+from .coin_simulation import CoinTradeSimulator
