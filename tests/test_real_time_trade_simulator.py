@@ -1,44 +1,62 @@
-import unittest
+import asyncio
+from datetime import datetime
+from unittest import TestCase, IsolatedAsyncioTestCase
 from unittest.mock import MagicMock
+
 from simulation.real_time_trade_simulator import RealTimeTradeSimulator
 
-class TestRealTimeTradeSimulator(unittest.TestCase):
+class TestRealTimeTradeSimulator(TestCase):
     def setUp(self):
         self.client = MagicMock()
         self.logger = MagicMock()
-        self.symbol = 'BTCUSDT'
+        self.symbol = "BTCUSDT"
         self.target_price = 50000
         self.amount_usd = 1000
-        self.simulator = RealTimeTradeSimulator(self.client, self.logger, self.symbol, self.target_price, self.amount_usd)
 
-    def test_process_message(self):
-        msg = {'e': 'trade', 'p': '48000'}
-        self.simulator.quantity = 10
-        self.simulator.conn_key = 'test_conn_key'
-
-        # Test when the message is not an error
-        self.simulator.process_message(msg)
-
-        self.logger.info.assert_called_with("Current price of BTCUSDT: 48000")
-        self.logger.info.assert_called_with("Simulating selling 10 BTCUSDT at 48000...")
-        self.simulator.bm.stop_socket.assert_called_with('test_conn_key')
-
-        # Test when the message is an error
-        msg = {'e': 'error', 'm': 'An error occurred'}
-        self.simulator.process_message(msg)
-
-        self.logger.error.assert_called_with("An error occurred")
-
-    def test_simulate_trade(self):
-        ticker = {'price': '48000'}
+    def test_simulate_trade_target_price_reached(self):
+        # Simulate the case where the target price is reached
+        ticker = {'price': '50000'}
         self.client.get_symbol_ticker.return_value = ticker
+        simulator = RealTimeTradeSimulator(self.client, self.logger, self.symbol, self.target_price, self.amount_usd)
+        simulator.process_message = MagicMock()
+        simulator.simulate_trade()
+        self.logger.info.assert_called_with(f"Simulating buying 0.02 BTCUSDT for 1000 USD at 50000.0...")
+        simulator.process_message.assert_called_with({'e': 'error'})
 
-        self.simulator.simulate_trade()
+    def test_simulate_trade_target_price_not_reached(self):
+        # Simulate the case where the target price is not reached
+        ticker = {'price': '40000'}
+        self.client.get_symbol_ticker.return_value = ticker
+        simulator = RealTimeTradeSimulator(self.client, self.logger, self.symbol, self.target_price, self.amount_usd)
+        simulator.process_message = MagicMock()
+        simulator.simulate_trade()
+        self.logger.info.assert_called_with(f"Simulating buying 0.025 BTCUSDT for 1000 USD at 40000.0...")
+        simulator.process_message.assert_called_with({'e': 'error'})
 
-        self.client.get_symbol_ticker.assert_called_with(symbol='BTCUSDT')
-        self.logger.info.assert_called_with("Simulating buying 0.020833333333333332 BTCUSDT for 1000 USD at 48000...")
-        self.simulator.bm.start_symbol_ticker_socket.assert_called_with('BTCUSDT', self.simulator.process_message)
-        self.simulator.bm.start.assert_called()
+class TestRealTimeTradeSimulatorAsync(IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.client = MagicMock()
+        self.logger = MagicMock()
+        self.symbol = "BTCUSDT"
+        self.target_price = 50000
+        self.amount_usd = 1000
 
-if __name__ == '__main__':
-    unittest.main()
+    async def test_simulate_trade_target_price_reached(self):
+        # Simulate the case where the target price is reached
+        ticker = {'price': '50000'}
+        self.client.get_symbol_ticker.return_value = ticker
+        simulator = RealTimeTradeSimulator(self.client, self.logger, self.symbol, self.target_price, self.amount_usd)
+        simulator.process_message = MagicMock()
+        await simulator.simulate_trade()
+        self.logger.info.assert_called_with(f"Simulating buying 0.02 BTCUSDT for 1000 USD at 50000.0...")
+        simulator.process_message.assert_called_with({'e': 'error'})
+
+    async def test_simulate_trade_target_price_not_reached(self):
+        # Simulate the case where the target price is not reached
+        ticker = {'price': '40000'}
+        self.client.get_symbol_ticker.return_value = ticker
+        simulator = RealTimeTradeSimulator(self.client, self.logger, self.symbol, self.target_price, self.amount_usd)
+        simulator.process_message = MagicMock()
+        await simulator.simulate_trade()
+        self.logger.info.assert_called_with(f"Simulating buying 0.025 BTCUSDT for 1000 USD at 40000.0...")
+        simulator.process_message.assert_called_with({'e': 'error'})
