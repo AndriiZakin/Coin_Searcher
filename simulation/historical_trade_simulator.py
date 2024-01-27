@@ -1,6 +1,6 @@
-from binance.client import Client
+from binance.client import AsyncClient
 from datetime import datetime
-
+import asyncio
 
 class HistoricalTradeSimulator:
     def __init__(self, client, logger, symbol, start_time, amount_usd, target_price):
@@ -11,8 +11,8 @@ class HistoricalTradeSimulator:
         self.amount_usd = amount_usd
         self.target_price = target_price
 
-    def simulate_trade(self):
-        klines = self.client.get_historical_klines(self.symbol, Client.KLINE_INTERVAL_1HOUR, self.start_time)
+    async def simulate_trade(self):
+        klines = await asyncio.to_thread(self.client.get_historical_klines, self.symbol, AsyncClient.KLINE_INTERVAL_1HOUR, self.start_time)
 
         if not klines:
             self.logger.error(f"The coin {self.symbol} did not exist at the given start time.")

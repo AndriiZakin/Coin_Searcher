@@ -6,3 +6,6 @@ __pycache__
 *.pyd
 *.db
 /data
+docs/Work_plan.md
+/logs
+main_config.py

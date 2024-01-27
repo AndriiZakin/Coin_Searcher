@@ -19,25 +19,25 @@ class CoinTradeSimulator:
             self.logger.error(f"An error occurred while creating the Client for {self.coin}: {e}")
             return
 
-    def simulate_trade(self):
+    async def simulate_trade(self):
         current_date_timestamp = int(datetime.today().replace(hour=0, minute=0, second=0, microsecond=0).timestamp() * 1000)
 
         if int(self.start_time) == current_date_timestamp:
-            self._simulate_real_time_trade()
+            await self._simulate_real_time_trade()
         else:
-            self._simulate_historical_and_real_time_trade()
+            await self._simulate_historical_and_real_time_trade()
 
-    def _simulate_real_time_trade(self):
+    async def _simulate_real_time_trade(self):
         try:
             real_time_simulator = RealTimeTradeSimulator(self.client, self.logger, self.coin, self.target_price, self.amount_usd)
-            real_time_simulator.simulate_trade()
+            await real_time_simulator.simulate_trade()
         except Exception as e:
             self.logger.error(f"An error occurred while simulating real-time trade for {self.coin}: {e}")
 
-    def _simulate_historical_and_real_time_trade(self):
+    async def _simulate_historical_and_real_time_trade(self):
         try:
             historical_simulator = HistoricalTradeSimulator(self.client, self.logger, self.coin, self.start_time, self.amount_usd, self.target_price)
-            new_amount_usd = historical_simulator.simulate_trade()
+            new_amount_usd = await historical_simulator.simulate_trade()
         except Exception as e:
             self.logger.error(f"An error occurred while simulating historical trade for {self.coin}: {e}")
             return
@@ -45,6 +45,6 @@ class CoinTradeSimulator:
         if new_amount_usd is not None:
             try:
                 real_time_simulator = RealTimeTradeSimulator(self.client, self.logger, self.coin, self.target_price, new_amount_usd)
-                real_time_simulator.simulate_trade()
+                await real_time_simulator.simulate_trade()
             except Exception as e:
                 self.logger.error(f"An error occurred while simulating real-time trade for {self.coin}: {e}")
