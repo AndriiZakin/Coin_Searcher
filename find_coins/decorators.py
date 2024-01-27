@@ -1,5 +1,5 @@
 import time
-from main_logger import setup_logger
+from config_logs.logger import setup_logger
 from functools import wraps
 import random
 

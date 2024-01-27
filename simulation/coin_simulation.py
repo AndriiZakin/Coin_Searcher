@@ -1,7 +1,7 @@
 from .historical_trade_simulator import HistoricalTradeSimulator
 from .real_time_trade_simulator import RealTimeTradeSimulator
-from main_config import BINANCE_API_KEY, BINANCE_API_SECRET
-from main_logger import setup_logger
+from config_logs.config import BINANCE_API_KEY, BINANCE_API_SECRET
+from config_logs.logger import setup_logger
 from binance.client import Client
 from datetime import datetime
 

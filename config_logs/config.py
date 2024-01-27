@@ -17,6 +17,6 @@ def load_configuration():
     start_time = str(int(datetime(2022, 1, 1).timestamp() * 1000))
     amount_usd = 1000
     target_price = 1200
-    num_coins = 1
+    num_coins = 3
 
     return coins_list, start_time, amount_usd, target_price, num_coins

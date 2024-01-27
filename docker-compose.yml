@@ -1,9 +1,0 @@
-version: '0.0.1'
-
-services:
-  coins_searcher:
-    build:
-      context: .
-    env_file:
-      - .env
-    command: python main_search.py

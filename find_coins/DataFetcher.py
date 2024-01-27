@@ -1,7 +1,7 @@
 from datetime import datetime
 import concurrent.futures
-from main_logger import setup_logger
-from main_config import FETCHED_SYMBOLS_PATH
+from config_logs.logger import setup_logger
+from config_logs.config import FETCHED_SYMBOLS_PATH
 import os
 import json
 

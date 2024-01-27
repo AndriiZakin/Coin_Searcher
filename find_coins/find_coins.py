@@ -1,7 +1,7 @@
 from .DataFetcher import DataFetcher
 from .DataProcessor import DataProcessor
 from .decorators import timer_decorator
-from main_config import FETCHED_SYMBOLS_PATH, SYMBOLS_PATH
+from config_logs.config import FETCHED_SYMBOLS_PATH, SYMBOLS_PATH
 
 class FindCoins:
     def __init__(self):

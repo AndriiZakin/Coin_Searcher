@@ -1,0 +1,1 @@
+This is a simple coins searcher. I won't recomend you to use it in real projects. However, you may what to play with it  if you are curious about how things work.

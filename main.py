@@ -3,8 +3,8 @@ import os
 import json
 from simulation import CoinTradeSimulator
 from find_coins import FindCoins
-from main_logger import setup_logger
-from main_config import load_configuration
+from config_logs.logger import setup_logger
+from config_logs.config import load_configuration
 
 class SimulationManager:
     def __init__(self):

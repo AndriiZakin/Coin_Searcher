@@ -4,3 +4,8 @@ __pycache__
 *.pyd
 *.db
 /docs
+.dockerignore
+Dockerfile
+*.md
+.git
+.gitignore
